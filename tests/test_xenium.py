@@ -139,8 +139,8 @@ def test_example_data_index_integrity(dataset: str) -> None:
         assert dataset == "Xenium_V1_Protein_Human_Kidney_tiny_outs"
         # fmt: off
         # test elements
-        assert sdata["morphology_focus"]["scale0"]["image"].sel(c="DAPI", y=2876.5, x=32).data.compute() == 99
-        assert sdata["morphology_focus"]["scale0"]["image"].sel(c="DAPI", y=4040.5, x=28.5).data.compute() == 103
+        assert sdata["morphology_focus"]["scale0"]["image"].sel(c="VISTA", y=2876.5, x=32.5).data.compute() == 99
+        assert sdata["morphology_focus"]["scale0"]["image"].sel(c="VISTA", y=4040.5, x=28.5).data.compute() == 103
         
         # assert sdata["cell_labels"]["scale0"]["image"].sel(y=0.5, x=2940.5).data.compute() == 2605
         # assert sdata["cell_labels"]["scale0"]["image"].sel(y=3.5, x=4801.5).data.compute() == 7618
