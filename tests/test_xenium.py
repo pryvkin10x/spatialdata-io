@@ -60,6 +60,10 @@ def test_roundtrip_with_data_limits() -> None:
             "Xenium_V1_human_Lung_2fov_outs",
             "{'y': (0, 3553), 'x': (0, 5793), 'z': (7, 32)}",
         ),
+        (
+            "Xenium_V1_Protein_Human_Kidney_tiny_outs",
+            "{'y': (0, 6915), 'x': (0, 2963), 'z': (6, 22)}",
+        )
     ],
 )
 def test_example_data_data_extent(dataset: str, expected: str) -> None:
@@ -75,7 +79,7 @@ def test_example_data_data_extent(dataset: str, expected: str) -> None:
 
 # TODO: add tests for Xenium 3.0.0
 @skip_if_below_python_version()
-@pytest.mark.parametrize("dataset", ["Xenium_V1_human_Breast_2fov_outs", "Xenium_V1_human_Lung_2fov_outs"])
+@pytest.mark.parametrize("dataset", ["Xenium_V1_human_Breast_2fov_outs", "Xenium_V1_human_Lung_2fov_outs", "Xenium_V1_Protein_Human_Kidney_tiny_outs"])
 def test_example_data_index_integrity(dataset: str) -> None:
     f = Path("./data") / dataset
     assert f.is_dir()
@@ -106,8 +110,33 @@ def test_example_data_index_integrity(dataset: str) -> None:
             "aaaljapa-1",
             "aabhbgmg-1",
         ]
+    elif dataset == "Xenium_V1_human_Lung_2fov_outs":
+        # fmt: off
+        # test elements
+        assert sdata["morphology_focus"]["scale0"]["image"].sel(c="DAPI", y=0.5, x=2215.5).data.compute() == 1
+        assert sdata["morphology_focus"]["scale0"]["image"].sel(c="DAPI", y=11.5, x=4437.5).data.compute() == 2007
+        assert sdata["cell_labels"]["scale0"]["image"].sel(y=0.5, x=2940.5).data.compute() == 2605
+        assert sdata["cell_labels"]["scale0"]["image"].sel(y=3.5, x=4801.5).data.compute() == 7618
+        assert sdata["nucleus_labels"]["scale0"]["image"].sel(y=8.5, x=4359.5).data.compute() == 7000
+        assert sdata["nucleus_labels"]["scale0"]["image"].sel(y=18.5, x=3015.5).data.compute() == 2764
+        assert np.allclose(sdata['transcripts'].compute().loc[[0, 10000, 20000]]['x'], [174.258392, 12.210024, 214.759186])
+        assert np.isclose(sdata['cell_boundaries'].loc['aaanbaof-1'].geometry.centroid.x, 43.96894317275074)
+        assert np.isclose(sdata['nucleus_boundaries'].loc['aaanbaof-1'].geometry.centroid.x,43.31874577809517)
+        assert np.array_equal(sdata['table'].X.indices[:3], [1, 8, 19])
+        # fmt: on
+
+        # test table annotation
+        region, region_key, instance_key = get_table_keys(sdata["table"])
+        assert region == "cell_labels"
+        matched_table = match_table_to_element(sdata, element_name=region, table_name="table")
+        assert len(matched_table) == 11898
+        assert matched_table.obs["cell_id"][:3].tolist() == [
+            "aaafiiei-1",
+            "aaanbaof-1",
+            "aabdiein-1",
+        ]
     else:
-        assert dataset == "Xenium_V1_human_Lung_2fov_outs"
+        assert dataset == "Xenium_V1_Protein_Human_Kidney_tiny_outs"
         # fmt: off
         # test elements
         assert sdata["morphology_focus"]["scale0"]["image"].sel(c="DAPI", y=0.5, x=2215.5).data.compute() == 1
