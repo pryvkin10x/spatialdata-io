@@ -142,10 +142,11 @@ def test_example_data_index_integrity(dataset: str) -> None:
         assert sdata["morphology_focus"]["scale0"]["image"].sel(c="VISTA", y=2876.5, x=32.5).data.compute() == 99
         assert sdata["morphology_focus"]["scale0"]["image"].sel(c="VISTA", y=4040.5, x=28.5).data.compute() == 103
         
-        assert sdata["cell_labels"]["scale0"]["image"].sel(y=8.5, x=4359.5).data.compute() == 7000
-        assert sdata["cell_labels"]["scale0"]["image"].sel(y=18.5, x=3015.5).data.compute() == 2764
-        assert sdata["nucleus_labels"]["scale0"]["image"].sel(y=128.5, x=297.5).data.compute() == 358
-        assert sdata["nucleus_labels"]["scale0"]["image"].sel(y=4059.5, x=637.5).data.compute() == 340
+        assert sdata["cell_labels"]["scale0"]["image"].sel(y=128.5, x=297.5).data.compute() == 358
+        assert sdata["cell_labels"]["scale0"]["image"].sel(y=4059.5, x=637.5).data.compute() == 340
+        
+        assert sdata["nucleus_labels"]["scale0"]["image"].sel(y=8.5, x=4359.5).data.compute() == 7000
+        assert sdata["nucleus_labels"]["scale0"]["image"].sel(y=18.5, x=3015.5).data.compute() == 2764
         
         assert np.allclose(sdata['transcripts'].compute().loc[[0, 10000, 20000]]['x'], [43.296875, 62.484375, 93.125])
         # assert np.isclose(sdata['cell_boundaries'].loc['aaanbaof-1'].geometry.centroid.x, 43.96894317275074)
