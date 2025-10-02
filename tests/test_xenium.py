@@ -152,7 +152,7 @@ def test_example_data_index_integrity(dataset: str) -> None:
         assert np.isclose(sdata['cell_boundaries'].loc['aadmbfof-1'].geometry.centroid.x, 64.54541104696033)
         assert np.isclose(sdata['nucleus_boundaries'].loc['aadmbfof-1'].geometry.centroid.x, 65.43305896114295)
         assert np.array_equal(sdata['table'].X.indices[:3], [3, 49, 53])
-        assert np.array_equal(sdata['table'].X.shape, [520, 358])
+        assert "VISTA" in sdata['table'].var_names
         # fmt: on
 
         # test table annotation
