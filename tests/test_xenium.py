@@ -150,7 +150,7 @@ def test_example_data_index_integrity(dataset: str) -> None:
         
         assert np.allclose(sdata['transcripts'].compute().loc[[0, 10000, 20000]]['x'], [43.296875, 62.484375, 93.125])
         assert np.isclose(sdata['cell_boundaries'].loc['aadmbfof-1'].geometry.centroid.x, 64.54541104696033)
-        assert np.isclose(sdata['nucleus_boundaries'].loc['"aadmbfof-1"'].geometry.centroid.x, 65.43305896114295)
+        assert np.isclose(sdata['nucleus_boundaries'].loc['aadmbfof-1'].geometry.centroid.x, 65.43305896114295)
         assert np.array_equal(sdata['table'].X.indices[:3], [3, 49, 53])
         assert np.array_equal(sdata['table'].X.shape, [520, 358])
         # fmt: on
@@ -159,7 +159,7 @@ def test_example_data_index_integrity(dataset: str) -> None:
         # region, region_key, instance_key = get_table_keys(sdata["table"])
         # assert region == "cell_labels"
         # matched_table = match_table_to_element(sdata, element_name=region, table_name="table")
-        # assert len(matched_table) == 11898
+        # assert len(matched_table) == 358
         # assert matched_table.obs["cell_id"][:3].tolist() == [
         #     "aaafiiei-1",
         #     "aaanbaof-1",
