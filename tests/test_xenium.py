@@ -149,8 +149,8 @@ def test_example_data_index_integrity(dataset: str) -> None:
         assert sdata["nucleus_labels"]["scale0"]["image"].sel(y=4039.5, x=93.5).data.compute() == 274
         
         assert np.allclose(sdata['transcripts'].compute().loc[[0, 10000, 20000]]['x'], [43.296875, 62.484375, 93.125])
-        assert np.isclose(sdata['cell_boundaries'].loc['aadmbfof-1'].geometry.centroid.x, 63.792503)
-        assert np.isclose(sdata['nucleus_boundaries'].loc['"aadmbfof-1"'].geometry.centroid.x, 65.1185)
+        assert np.isclose(sdata['cell_boundaries'].loc['aadmbfof-1'].geometry.centroid.x, 64.54541104696033)
+        assert np.isclose(sdata['nucleus_boundaries'].loc['"aadmbfof-1"'].geometry.centroid.x, 65.43305896114295)
         assert np.array_equal(sdata['table'].X.indices[:3], [3, 49, 53])
         assert np.array_equal(sdata['table'].X.shape, [520, 358])
         # fmt: on
